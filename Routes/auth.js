@@ -1,9 +1,12 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../Models/User");
 
 const router = express.Router();
+
+const JWT_SECRET = "NOT_SO_SECRET";
 
 router.post(
   "/",
@@ -41,7 +44,14 @@ router.post(
         email: req.body.email,
         password: secPass,
       });
-      res.json(user);
+
+      // Generating Token
+      const data = {
+        user: { id: user.id },
+      };
+      const authToken = jwt.sign(data, JWT_SECRET);
+
+      res.json({ authToken });
     } catch (error) {
       res.status(500).send("Internal Server Error");
     }
