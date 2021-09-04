@@ -81,4 +81,22 @@ router.put("/:id", fetchUser, async (req, res) => {
   }
 });
 
+// Delete Note
+router.delete("/:id", fetchUser, async (req, res) => {
+  try {
+    // Finding Note
+    let note = await Notes.findById(req.params.id);
+    if (!note) return res.status(404).send("Not Found");
+    if (note.user.toString() !== req.user.id)
+      return res.status(401).send("Not Allowed");
+
+    // Deleting Note
+    note = await Notes.findByIdAndDelete(req.params.id);
+
+    return res.json(note);
+  } catch (error) {
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;
