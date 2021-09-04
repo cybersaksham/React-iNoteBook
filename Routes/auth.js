@@ -5,7 +5,7 @@ const User = require("../Models/User");
 const router = express.Router();
 
 router.post(
-  "/createUser",
+  "/",
   [
     // Validators
     body("name", "Name must be 3 characters long.").isLength({ min: 3 }),
@@ -31,7 +31,7 @@ router.post(
           .json({ error: "User already exists with this email id." });
 
       // Creating a new user
-      user = await User.csreate({
+      user = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
