@@ -1,5 +1,6 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
 const User = require("../Models/User");
 
 const router = express.Router();
@@ -30,15 +31,19 @@ router.post(
           .status(400)
           .json({ error: "User already exists with this email id." });
 
+      // Hashing Password
+      const salt = await bcrypt.genSalt(10);
+      const secPass = await bcrypt.hash(req.body.password, salt);
+
       // Creating a new user
       user = await User.create({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: secPass,
       });
       res.json(user);
     } catch (error) {
-      res.status(500).send("Some error occurred");
+      res.status(500).send("Internal Server Error");
     }
   }
 );
