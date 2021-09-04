@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../Models/User");
+const fetchUser = require("../MiddleWare/fetch-user");
 
 const router = express.Router();
 
@@ -106,5 +107,17 @@ router.post(
     }
   }
 );
+
+// Fetch user
+router.post("/fetch", fetchUser, async (req, res) => {
+  try {
+    // Finding User
+    const userId = req.user.id;
+    const user = await User.findById(userId).select("-password");
+    return res.send(user);
+  } catch (error) {
+    return res.status(500).send("Internal Server Error");
+  }
+});
 
 module.exports = router;
