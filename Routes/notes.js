@@ -41,7 +41,7 @@ router.post(
       // Creating Note
       const note = new Notes({ title, description, tag, user: req.user.id });
 
-      // Savign Note
+      // Saving Note
       const savedNote = await note.save();
 
       return res.json(savedNote);
@@ -50,5 +50,35 @@ router.post(
     }
   }
 );
+
+// Update Existing Note
+router.put("/:id", fetchUser, async (req, res) => {
+  try {
+    const { title, description, tag } = req.body;
+
+    // Creating New Note
+    const newNote = {};
+    if (title) newNote.title = title;
+    if (description) newNote.description = description;
+    if (tag) newNote.tag = tag;
+
+    // Finding Note
+    let note = await Notes.findById(req.params.id);
+    if (!note) return res.status(404).send("Not Found");
+    if (note.user.toString() !== req.user.id)
+      return res.status(401).send("Not Allowed");
+
+    // Updating Note
+    note = await Notes.findByIdAndUpdate(
+      req.params.id,
+      { $set: newNote },
+      { new: true }
+    );
+
+    return res.json(note);
+  } catch (error) {
+    return res.status(500).send("Internal Server Error");
+  }
+});
 
 module.exports = router;
