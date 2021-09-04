@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Available Routes
 app.use("/api/auth", require("./Routes/auth"));
+app.use("/api/notes", require("./Routes/notes"));
 
 // Listening
 app.listen(port, () => {
