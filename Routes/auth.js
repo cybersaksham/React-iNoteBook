@@ -8,8 +8,9 @@ const router = express.Router();
 
 const JWT_SECRET = "NOT_SO_SECRET";
 
+// Creating a new user
 router.post(
-  "/",
+  "/create",
   [
     // Validators
     body("name", "Name must be 3 characters long.").isLength({ min: 3 }),
@@ -44,6 +45,54 @@ router.post(
         email: req.body.email,
         password: secPass,
       });
+
+      // Generating Token
+      const data = {
+        user: { id: user.id },
+      };
+      const authToken = jwt.sign(data, JWT_SECRET);
+
+      res.json({ authToken });
+    } catch (error) {
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
+// Login user
+router.post(
+  "/login",
+  [
+    // Validators
+    body("email", "Enter a valid email.").isEmail(),
+    body("password", "Password must be between 5 & 10 character.").isLength({
+      min: 5,
+      max: 10,
+    }),
+  ],
+  async (req, res) => {
+    // Sending error if validator failed
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+      // Getting user if it exists already
+      let user = await User.findOne({ email });
+      if (!user)
+        return res
+          .status(400)
+          .json({ error: "Try to login with correct credentials." });
+
+      // Comparing Password
+      const passwordCompare = bcrypt.compare(password, user.password);
+      if (!passwordCompare)
+        return res
+          .status(400)
+          .json({ error: "Try to login with correct credentials." });
 
       // Generating Token
       const data = {
