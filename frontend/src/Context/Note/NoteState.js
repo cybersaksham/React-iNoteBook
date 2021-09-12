@@ -56,11 +56,8 @@ const NoteState = (props) => {
       body: JSON.stringify(updated),
     });
     const json = await response.json();
-    checkRequest(
-      response.status,
-      json.error,
-      "Note Updated Successfully",
-      fetchNotes
+    checkRequest(response.status, json.error, "Note Updated Successfully", () =>
+      setNotes(json.notes)
     );
   };
 
@@ -74,11 +71,8 @@ const NoteState = (props) => {
       },
     });
     const json = await response.json();
-    checkRequest(
-      response.status,
-      json.error,
-      "Note Deleted Successfully",
-      fetchNotes
+    checkRequest(response.status, json.error, "Note Deleted Successfully", () =>
+      setNotes(json.notes)
     );
   };
 

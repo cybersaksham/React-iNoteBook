@@ -97,7 +97,8 @@ router.put(
         { new: true }
       );
 
-      return res.json(note);
+      const notes = await Notes.find({ user: req.user.id });
+      return res.json({ notes });
     } catch (error) {
       return res.status(500).send({ error: "Internal Server Error" });
     }
@@ -116,7 +117,8 @@ router.delete("/:id", fetchUser, async (req, res) => {
     // Deleting Note
     note = await Notes.findByIdAndDelete(req.params.id);
 
-    return res.json(note);
+    const notes = await Notes.find({ user: req.user.id });
+    return res.json({ notes });
   } catch (error) {
     return res.status(500).send({ error: "Internal Server Error" });
   }
