@@ -123,4 +123,26 @@ router.delete("/:id", fetchUser, async (req, res) => {
   }
 });
 
+// Delete All Notes
+router.delete("/dltAll", fetchUser, async (req, res) => {
+  console.log("hi");
+  try {
+    // Finding Notes
+    const notes = await Notes.find({ user: req.user.id });
+
+    // Deleting Notes
+    notes.forEach(async (note) => {
+      if (!note) return res.status(404).send({ error: "Not Found" });
+      if (note.user.toString() !== req.user.id)
+        return res.status(401).send({ error: "Not Allowed" });
+
+      await Notes.findByIdAndDelete(note.id);
+    });
+
+    return res.json({ notes: [] });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+});
+
 module.exports = router;
