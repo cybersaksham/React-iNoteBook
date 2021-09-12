@@ -5,7 +5,7 @@ import ModalContext from "../Context/Modal/ModalContext";
 
 const Home = () => {
   // Contexts
-  const { addNote } = useContext(NoteContext);
+  const { addNote, dltAll } = useContext(NoteContext);
   const { modal, setModal } = useContext(ModalContext);
 
   // Function to handle Add Note button in modal
@@ -33,7 +33,9 @@ const Home = () => {
         >
           Add Note
         </button>
-        <button className="btn btn-danger">Delete All</button>
+        <button onClick={dltAll} className="btn btn-danger">
+          Delete All
+        </button>
       </div>
       <h2>Your Notes</h2>
       <hr />

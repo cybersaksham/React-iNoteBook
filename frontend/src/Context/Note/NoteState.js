@@ -82,9 +82,24 @@ const NoteState = (props) => {
     );
   };
 
+  // Deleting All Notes
+  const dltAll = async () => {
+    const response = await fetch(HOST + "/dltAll", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": AUTH_TOKEN,
+      },
+    });
+    const json = await response.json();
+    checkRequest(response.status, json.error, "All Notes Deleted", () =>
+      setNotes(json.notes)
+    );
+  };
+
   return (
     <NoteContext.Provider
-      value={{ notes, fetchNotes, addNote, editNote, dltNote }}
+      value={{ notes, fetchNotes, addNote, editNote, dltNote, dltAll }}
     >
       {props.children}
     </NoteContext.Provider>
