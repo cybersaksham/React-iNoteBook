@@ -28,14 +28,10 @@ sudo apt-get install -y mongodb-org
 ```cmd
 git clone https://github.com/cybersaksham/React-iNoteBook
 cd React-iNoteBook
-cd backend
+npm --prefix ./backend install
+npm --prefix ./frontend install
 npm install
-cd ..
-cd frontend
-npm install
-cd ..
 sudo service mongod start
-npm install
 npm run both
 ```
 
@@ -64,12 +60,8 @@ npm install -g nodemon
 ```cmd
 git clone https://github.com/cybersaksham/React-iNoteBook
 cd React-iNoteBook
-cd backend
-npm install
-cd ..
-cd frontend
-npm install
-cd ..
+npm --prefix ./backend install
+npm --prefix ./frontend install
 npm install
 npm run both
 ```
