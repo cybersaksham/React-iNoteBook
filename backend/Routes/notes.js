@@ -52,34 +52,51 @@ router.post(
 );
 
 // Update Existing Note
-router.put("/:id", fetchUser, async (req, res) => {
-  try {
-    const { title, description, tag } = req.body;
+router.put(
+  "/:id",
+  fetchUser,
+  [
+    // Validators
+    body("title", "Title must be 3 characters long.").isLength({ min: 3 }),
+    body("description", "Description must be 5 characters long.").isLength({
+      min: 5,
+    }),
+  ],
+  async (req, res) => {
+    // Sending error if validator failed
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: errors.array()[0].msg });
+    }
 
-    // Creating New Note
-    const newNote = {};
-    if (title) newNote.title = title;
-    if (description) newNote.description = description;
-    if (tag) newNote.tag = tag;
+    try {
+      const { title, description, tag } = req.body;
 
-    // Finding Note
-    let note = await Notes.findById(req.params.id);
-    if (!note) return res.status(404).send({ error: "Not Found" });
-    if (note.user.toString() !== req.user.id)
-      return res.status(401).send({ error: "Not Allowed" });
+      // Creating New Note
+      const newNote = {};
+      if (title) newNote.title = title;
+      if (description) newNote.description = description;
+      if (tag) newNote.tag = tag;
 
-    // Updating Note
-    note = await Notes.findByIdAndUpdate(
-      req.params.id,
-      { $set: newNote },
-      { new: true }
-    );
+      // Finding Note
+      let note = await Notes.findById(req.params.id);
+      if (!note) return res.status(404).send({ error: "Not Found" });
+      if (note.user.toString() !== req.user.id)
+        return res.status(401).send({ error: "Not Allowed" });
 
-    return res.json(note);
-  } catch (error) {
-    return res.status(500).send({ error: "Internal Server Error" });
+      // Updating Note
+      note = await Notes.findByIdAndUpdate(
+        req.params.id,
+        { $set: newNote },
+        { new: true }
+      );
+
+      return res.json(note);
+    } catch (error) {
+      return res.status(500).send({ error: "Internal Server Error" });
+    }
   }
-});
+);
 
 // Delete Note
 router.delete("/:id", fetchUser, async (req, res) => {

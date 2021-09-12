@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useRequest from "../../Hooks/Request";
 import NoteContext from "./NoteContext";
 
 const NoteState = (props) => {
@@ -7,6 +8,8 @@ const NoteState = (props) => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjEzMzg1ZWNkYWNjMzJmMWM2ZTZjZWIxIn0sImlhdCI6MTYzMDc2NzI0M30._LJqj4oG19yeT71NfIjhJ6lHapTQ36RkZHtb1G3OE5c";
 
   const [notes, setNotes] = useState([]);
+
+  const checkRequest = useRequest();
 
   // Fetching Notes
   const fetchNotes = async () => {
@@ -32,12 +35,14 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const json = await response.json();
-    setNotes(notes.concat(json));
+    checkRequest(response.status, json.error, "Note Added Successfully", () =>
+      setNotes(notes.concat(json))
+    );
   };
 
   // Updating a Note
   const editNote = async (id, updated) => {
-    await fetch(HOST + "/" + id, {
+    const response = await fetch(HOST + "/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -45,19 +50,31 @@ const NoteState = (props) => {
       },
       body: JSON.stringify(updated),
     });
-    fetchNotes();
+    const json = await response.json();
+    checkRequest(
+      response.status,
+      json.error,
+      "Note Updated Successfully",
+      fetchNotes
+    );
   };
 
   // Deleting a Note
   const dltNote = async (id) => {
-    await fetch(HOST + "/" + id, {
+    const response = await fetch(HOST + "/" + id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "auth-token": DUMMY_TOKEN,
       },
     });
-    fetchNotes();
+    const json = await response.json();
+    checkRequest(
+      response.status,
+      json.error,
+      "Note Deleted Successfully",
+      fetchNotes
+    );
   };
 
   return (

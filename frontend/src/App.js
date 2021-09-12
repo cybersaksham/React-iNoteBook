@@ -11,9 +11,9 @@ import AlertState from "./Context/Alert/AlertState";
 
 function App() {
   return (
-    <NoteState>
-      <ModalState>
-        <AlertState>
+    <AlertState>
+      <NoteState>
+        <ModalState>
           <Router>
             <Navbar />
             <Alert />
@@ -27,9 +27,9 @@ function App() {
               </Route>
             </Switch>
           </Router>
-        </AlertState>
-      </ModalState>
-    </NoteState>
+        </ModalState>
+      </NoteState>
+    </AlertState>
   );
 }
 
