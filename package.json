@@ -1,0 +1,24 @@
+{
+  "name": "inotebook",
+  "version": "1.0.0",
+  "description": "This project is made by react js framework. This is an advanced notes website with authentication also.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "both": "concurrently \"npm --prefix ./frontend start\" \"nodemon ./backend/index.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cybersaksham/React-iNoteBook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cybersaksham/React-iNoteBook/issues"
+  },
+  "homepage": "https://github.com/cybersaksham/React-iNoteBook#readme",
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  }
+}
