@@ -1,27 +1,32 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import useRequest from "../../Hooks/Request";
 import NoteContext from "./NoteContext";
 
 const NoteState = (props) => {
   const HOST = "http://localhost:5000/api/notes";
-  const DUMMY_TOKEN =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjEzMzg1ZWNkYWNjMzJmMWM2ZTZjZWIxIn0sImlhdCI6MTYzMDc2NzI0M30._LJqj4oG19yeT71NfIjhJ6lHapTQ36RkZHtb1G3OE5c";
+  const AUTH_TOKEN = JSON.parse(localStorage.getItem("token"));
 
   const [notes, setNotes] = useState([]);
+  const history = useHistory();
 
   const checkRequest = useRequest();
 
   // Fetching Notes
   const fetchNotes = async () => {
-    const response = await fetch(HOST, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": DUMMY_TOKEN,
-      },
-    });
-    const json = await response.json();
-    setNotes(json);
+    if (AUTH_TOKEN) {
+      const response = await fetch(HOST, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": AUTH_TOKEN,
+        },
+      });
+      const json = await response.json();
+      setNotes(json);
+    } else {
+      history.push("/login");
+    }
   };
 
   // Adding New Note
@@ -30,7 +35,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": DUMMY_TOKEN,
+        "auth-token": AUTH_TOKEN,
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -46,7 +51,7 @@ const NoteState = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": DUMMY_TOKEN,
+        "auth-token": AUTH_TOKEN,
       },
       body: JSON.stringify(updated),
     });
@@ -65,7 +70,7 @@ const NoteState = (props) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": DUMMY_TOKEN,
+        "auth-token": AUTH_TOKEN,
       },
     });
     const json = await response.json();
