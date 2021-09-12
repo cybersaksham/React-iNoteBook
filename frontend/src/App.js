@@ -6,23 +6,28 @@ import Navbar from "./Components/Navbar";
 import ModalState from "./Context/Modal/ModalState";
 import NoteState from "./Context/Note/NoteState";
 import NoteForm from "./Components/NoteForm";
+import Alert from "./Components/Alert";
+import AlertState from "./Context/Alert/AlertState";
 
 function App() {
   return (
     <NoteState>
       <ModalState>
-        <Router>
-          <Navbar />
-          <NoteForm />
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route exact path="/about">
-              <About />
-            </Route>
-          </Switch>
-        </Router>
+        <AlertState>
+          <Router>
+            <Navbar />
+            <Alert />
+            <NoteForm />
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route exact path="/about">
+                <About />
+              </Route>
+            </Switch>
+          </Router>
+        </AlertState>
       </ModalState>
     </NoteState>
   );
