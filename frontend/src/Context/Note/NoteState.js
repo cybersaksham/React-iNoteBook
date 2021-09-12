@@ -85,7 +85,7 @@ const NoteState = (props) => {
   // Deleting All Notes
   const dltAll = async () => {
     const response = await fetch(HOST + "/dltAll", {
-      method: "DELETE",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "auth-token": AUTH_TOKEN,

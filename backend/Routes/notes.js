@@ -2,7 +2,6 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const Notes = require("../Models/Notes");
 const fetchUser = require("../MiddleWare/fetch-user");
-const { Router } = require("express");
 
 const router = express.Router();
 
@@ -124,8 +123,7 @@ router.delete("/:id", fetchUser, async (req, res) => {
 });
 
 // Delete All Notes
-router.delete("/dltAll", fetchUser, async (req, res) => {
-  console.log("hi");
+router.post("/dltAll", fetchUser, async (req, res) => {
   try {
     // Finding Notes
     const notes = await Notes.find({ user: req.user.id });
@@ -141,7 +139,7 @@ router.delete("/dltAll", fetchUser, async (req, res) => {
 
     return res.json({ notes: [] });
   } catch (error) {
-    return res.status(500).send({ error: error });
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
