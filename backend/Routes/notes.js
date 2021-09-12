@@ -13,7 +13,7 @@ router.get("/", fetchUser, async (req, res) => {
     const notes = await Notes.find({ user: req.user.id });
     return res.json(notes);
   } catch (error) {
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
@@ -32,7 +32,7 @@ router.post(
     // Sending error if validator failed
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array()[0].msg });
     }
 
     try {
@@ -46,7 +46,7 @@ router.post(
 
       return res.json(savedNote);
     } catch (error) {
-      return res.status(500).send("Internal Server Error");
+      return res.status(500).send({ error: "Internal Server Error" });
     }
   }
 );
@@ -64,9 +64,9 @@ router.put("/:id", fetchUser, async (req, res) => {
 
     // Finding Note
     let note = await Notes.findById(req.params.id);
-    if (!note) return res.status(404).send("Not Found");
+    if (!note) return res.status(404).send({ error: "Not Found" });
     if (note.user.toString() !== req.user.id)
-      return res.status(401).send("Not Allowed");
+      return res.status(401).send({ error: "Not Allowed" });
 
     // Updating Note
     note = await Notes.findByIdAndUpdate(
@@ -77,7 +77,7 @@ router.put("/:id", fetchUser, async (req, res) => {
 
     return res.json(note);
   } catch (error) {
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
@@ -86,16 +86,16 @@ router.delete("/:id", fetchUser, async (req, res) => {
   try {
     // Finding Note
     let note = await Notes.findById(req.params.id);
-    if (!note) return res.status(404).send("Not Found");
+    if (!note) return res.status(404).send({ error: "Not Found" });
     if (note.user.toString() !== req.user.id)
-      return res.status(401).send("Not Allowed");
+      return res.status(401).send({ error: "Not Allowed" });
 
     // Deleting Note
     note = await Notes.findByIdAndDelete(req.params.id);
 
     return res.json(note);
   } catch (error) {
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 });
 

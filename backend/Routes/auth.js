@@ -25,7 +25,7 @@ router.post(
     // Sending error if validator failed
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array()[0].msg });
     }
 
     try {
@@ -55,7 +55,7 @@ router.post(
 
       res.json({ authToken });
     } catch (error) {
-      res.status(500).send("Internal Server Error");
+      res.status(500).send({ error: "Internal Server Error" });
     }
   }
 );
@@ -75,7 +75,7 @@ router.post(
     // Sending error if validator failed
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array()[0].msg });
     }
 
     const { email, password } = req.body;
@@ -103,7 +103,7 @@ router.post(
 
       res.json({ authToken });
     } catch (error) {
-      res.status(500).send("Internal Server Error");
+      res.status(500).send({ error: "Internal Server Error" });
     }
   }
 );
@@ -116,7 +116,7 @@ router.post("/fetch", fetchUser, async (req, res) => {
     const user = await User.findById(userId).select("-password");
     return res.send(user);
   } catch (error) {
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
