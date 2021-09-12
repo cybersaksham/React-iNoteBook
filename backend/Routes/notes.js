@@ -38,8 +38,14 @@ router.post(
     try {
       const { title, description, tag } = req.body;
 
+      // Creating New Note
+      const newNote = {};
+      if (title) newNote.title = title;
+      if (description) newNote.description = description;
+      if (tag !== "" && tag !== null) newNote.tag = tag;
+
       // Creating Note
-      const note = new Notes({ title, description, tag, user: req.user.id });
+      const note = new Notes({ ...newNote, user: req.user.id });
 
       // Saving Note
       const savedNote = await note.save();
@@ -76,7 +82,8 @@ router.put(
       const newNote = {};
       if (title) newNote.title = title;
       if (description) newNote.description = description;
-      if (tag) newNote.tag = tag;
+      if (tag !== "" && tag !== null) newNote.tag = tag;
+      else newNote.tag = "General";
 
       // Finding Note
       let note = await Notes.findById(req.params.id);
