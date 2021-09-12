@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../Context/Auth/AuthContext";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const { loginUser } = useContext(AuthContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
+    loginUser(credentials);
   };
 
   const handleChange = () => {
