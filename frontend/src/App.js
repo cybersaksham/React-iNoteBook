@@ -10,14 +10,15 @@ import Alert from "./Components/Alert";
 import AlertState from "./Context/Alert/AlertState";
 import Login from "./Components/Login";
 import AuthState from "./Context/Auth/AuthState";
+import Register from "./Components/Register";
 
 function App() {
   return (
-    <AlertState>
-      <AuthState>
-        <NoteState>
-          <ModalState>
-            <Router>
+    <Router>
+      <AlertState>
+        <AuthState>
+          <NoteState>
+            <ModalState>
               <Navbar />
               <Alert />
               <NoteForm />
@@ -31,12 +32,15 @@ function App() {
                 <Route exact path="/login">
                   <Login />
                 </Route>
+                <Route exact path="/signup">
+                  <Register />
+                </Route>
               </Switch>
-            </Router>
-          </ModalState>
-        </NoteState>
-      </AuthState>
-    </AlertState>
+            </ModalState>
+          </NoteState>
+        </AuthState>
+      </AlertState>
+    </Router>
   );
 }
 
