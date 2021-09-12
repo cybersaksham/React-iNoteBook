@@ -19,10 +19,15 @@ const AuthState = (props) => {
       body: JSON.stringify({ email, password }),
     });
     const json = await response.json();
-    checkRequest(response.status, json.error, "Logged in successfully", () => {
-      history.push("/");
-      localStorage.setItem("token", JSON.stringify(json.authToken));
-    });
+    checkRequest(
+      response.status,
+      json.error,
+      "Logged in successfully",
+      async () => {
+        await localStorage.setItem("token", JSON.stringify(json.authToken));
+        history.push("/");
+      }
+    );
   };
 
   // Registering
@@ -40,9 +45,9 @@ const AuthState = (props) => {
         response.status,
         json.error,
         "Logged in successfully",
-        () => {
+        async () => {
+          await localStorage.setItem("token", JSON.stringify(json.authToken));
           history.push("/");
-          localStorage.setItem("token", JSON.stringify(json.authToken));
         }
       );
     } else {
