@@ -1,8 +1,14 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    history.push("/login");
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -45,6 +51,23 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
+          {!localStorage.getItem("token") ? (
+            <>
+              <Link className="mx-1 btn btn-outline-primary" to="/login">
+                Login
+              </Link>
+              <Link className="mx-1 btn btn-outline-primary" to="/signup">
+                SignUp
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="mx-1 btn btn-outline-danger"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

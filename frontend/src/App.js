@@ -8,6 +8,7 @@ import NoteState from "./Context/Note/NoteState";
 import NoteForm from "./Components/NoteForm";
 import Alert from "./Components/Alert";
 import AlertState from "./Context/Alert/AlertState";
+import Login from "./Components/Login";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
               </Route>
               <Route exact path="/about">
                 <About />
+              </Route>
+              <Route exact path="/login">
+                <Login />
               </Route>
             </Switch>
           </Router>
