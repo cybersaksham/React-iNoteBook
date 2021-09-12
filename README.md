@@ -26,18 +26,16 @@ sudo apt-get install -y mongodb-org
 <li>Downloading project code & running server</li>
 
 ```cmd
-mkdir React-iNoteBook
+git clone https://github.com/cybersaksham/React-iNoteBook
 cd React-iNoteBook
-git clone --branch backend https://github.com/cybersaksham/React-iNoteBook
-mv React-iNoteBook backend
 cd backend
 npm install
 cd ..
-git clone --branch frontend https://github.com/cybersaksham/React-iNoteBook
-mv React-iNoteBook frontend
 cd frontend
 npm install
+cd ..
 sudo service mongod start
+npm install
 npm run both
 ```
 
@@ -47,7 +45,7 @@ First stop server by ctrl+C.
 
 ```cmd
 sudo service mongod stop
-cd ../..
+cd ..
 rm -rf React-iNoteBook
 ```
 
@@ -64,16 +62,14 @@ npm install -g nodemon
 <li>Downloading project code & running server</li>
 
 ```cmd
-mkdir React-iNoteBook
+git clone https://github.com/cybersaksham/React-iNoteBook
 cd React-iNoteBook
-git clone --branch backend https://github.com/cybersaksham/React-iNoteBook
-ren React-iNoteBook backend
 cd backend
 npm install
 cd ..
-git clone --branch frontend https://github.com/cybersaksham/React-iNoteBook
-ren React-iNoteBook frontend
 cd frontend
+npm install
+cd ..
 npm install
 npm run both
 ```
@@ -83,7 +79,7 @@ npm run both
 First stop server by ctrl+C.
 
 ```cmd
-cd ../..
+cd ..
 rmdir /S React-iNoteBook
 ```
 
