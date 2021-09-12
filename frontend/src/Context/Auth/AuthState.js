@@ -44,7 +44,7 @@ const AuthState = (props) => {
       checkRequest(
         response.status,
         json.error,
-        "Logged in successfully",
+        "Registered successfully",
         async () => {
           await localStorage.setItem("token", JSON.stringify(json.authToken));
           history.push("/");
