@@ -4,7 +4,7 @@ This project is made by react js framework. This is an advanced notes website wi
 
 ## Development server
 
-### Linux
+### Linux - Debian
 <li>Installing node js & nodemon</li>
 
 ```cmd
@@ -41,6 +41,46 @@ First stop server by ctrl+C.
 
 ```cmd
 sudo service mongod stop
+cd ..
+rm -rf React-iNoteBook
+```
+
+### Linux - Arch
+<li>Installing node js & nodemon</li>
+
+```cmd
+sudo pacman -S nodejs npm
+npm install -g nodemon
+```
+
+<li>Installing mongodb</li>
+
+```cmd
+git clone https://aur.archlinux.org/mongodb-bin.git
+cd mongodb-bin
+makepkg -si
+cd ..
+rm -rf mongodb-bin
+```
+
+<li>Downloading project code & running server</li>
+
+```cmd
+git clone https://github.com/cybersaksham/React-iNoteBook
+cd React-iNoteBook
+npm --prefix ./backend install
+npm --prefix ./frontend install
+npm install
+systemctl start mongodb
+npm run both
+```
+
+<li>Uninstalling Code</li>
+
+First stop server by ctrl+C.
+
+```cmd
+systemctl stop mongodb
 cd ..
 rm -rf React-iNoteBook
 ```
